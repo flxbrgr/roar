@@ -1,0 +1,56 @@
+{
+  "app": {
+    "title": "ArenaFlow",
+    "tagline": "Plan, manage and analyze tournaments with confidence.",
+    "language": "Language",
+    "cta": "Create tournament"
+  },
+  "tournamentForm": {
+    "name": "Tournament name",
+    "description": "Description",
+    "format": "Format",
+    "locale": "Primary language",
+    "addTeam": "Add team",
+    "teamPlaceholder": "Team name",
+    "create": "Create"
+  },
+  "formats": {
+    "roundRobin": "Round Robin",
+    "knockout": "Knockout",
+    "swiss": "Swiss (coming soon)",
+    "custom": "Custom"
+  },
+  "dashboard": {
+    "overview": "Overview",
+    "teams": "Teams",
+    "matches": "Matches",
+    "standings": "Table",
+    "actions": "Actions",
+    "noTournaments": "No tournaments yet. Create one to get started.",
+    "generateRoundRobin": "Generate round robin",
+    "generateKnockout": "Generate knockout bracket",
+    "recordScore": "Record score",
+    "noMatches": "No matches scheduled yet.",
+    "round": "Round",
+    "home": "Home",
+    "away": "Away",
+    "score": "Score",
+    "bracket": "Knockout tree",
+    "selectHint": "Select a tournament to explore its bracket, schedule and performance insights."
+  },
+  "tables": {
+    "played": "P",
+    "wins": "W",
+    "draws": "D",
+    "losses": "L",
+    "gf": "GF",
+    "ga": "GA",
+    "gd": "GD",
+    "points": "Pts"
+  },
+  "notifications": {
+    "created": "Tournament created",
+    "scheduleGenerated": "Schedule updated",
+    "resultRecorded": "Result stored"
+  }
+}
