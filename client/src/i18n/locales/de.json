@@ -1,0 +1,56 @@
+{
+  "app": {
+    "title": "ArenaFlow",
+    "tagline": "Plane, manage und analysiere Turniere mit Sicherheit.",
+    "language": "Sprache",
+    "cta": "Turnier erstellen"
+  },
+  "tournamentForm": {
+    "name": "Turniername",
+    "description": "Beschreibung",
+    "format": "Format",
+    "locale": "Primäre Sprache",
+    "addTeam": "Team hinzufügen",
+    "teamPlaceholder": "Teamname",
+    "create": "Anlegen"
+  },
+  "formats": {
+    "roundRobin": "Jeder gegen jeden",
+    "knockout": "K.-o.-System",
+    "swiss": "Schweizer System (kommt bald)",
+    "custom": "Individuell"
+  },
+  "dashboard": {
+    "overview": "Überblick",
+    "teams": "Teams",
+    "matches": "Spiele",
+    "standings": "Tabelle",
+    "actions": "Aktionen",
+    "noTournaments": "Noch keine Turniere. Lege direkt das erste an.",
+    "generateRoundRobin": "Spielplan jeder gegen jeden",
+    "generateKnockout": "K.-o.-Baum erzeugen",
+    "recordScore": "Ergebnis eintragen",
+    "noMatches": "Noch keine Spiele geplant.",
+    "round": "Runde",
+    "home": "Heim",
+    "away": "Gast",
+    "score": "Ergebnis",
+    "bracket": "Turnierbaum",
+    "selectHint": "Wähle ein Turnier, um Baum, Spielplan und Performance-Analysen zu entdecken."
+  },
+  "tables": {
+    "played": "Sp",
+    "wins": "S",
+    "draws": "U",
+    "losses": "N",
+    "gf": "T+",
+    "ga": "T-",
+    "gd": "+/-",
+    "points": "Pkt"
+  },
+  "notifications": {
+    "created": "Turnier angelegt",
+    "scheduleGenerated": "Spielplan aktualisiert",
+    "resultRecorded": "Ergebnis gespeichert"
+  }
+}
