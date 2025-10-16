@@ -1,7 +1,6 @@
 node_modules
 pnpm-lock.yaml
 yarn.lock
-package-lock.json
 .DS_Store
 npm-debug.log*
 server/node_modules
