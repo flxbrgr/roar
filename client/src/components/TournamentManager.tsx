@@ -1,4 +1,5 @@
-import { useMemo, useState, type DragEvent } from 'react'
+import { useMemo, useState } from 'react'
+import type { DragEvent } from 'react'
 import { ArrowRight, ListPlus, RefreshCcw, Trophy, Upload } from 'lucide-react'
 
 type Phase = 'setup' | 'roundRobin' | 'bracket'
@@ -201,6 +202,38 @@ export function TournamentManager () {
     setBracketSlots([])
   }
 
+  const createFirstRoundMatches = (slots: BracketSlot[]) => {
+    const seededSlots = slots.filter((slot): slot is BracketSlot & { teamId: string } => Boolean(slot.teamId))
+
+    const firstRound: Match[] = []
+    const lastIndex = seededSlots.length - 1
+
+    for (let i = 0; i < Math.floor(seededSlots.length / 2); i += 1) {
+      const top = seededSlots[i]
+      const bottom = seededSlots[lastIndex - i]
+
+      firstRound.push({
+        id: createId(),
+        stage: 'bracket',
+        round: 1,
+        homeTeamId: top.teamId,
+        awayTeamId: bottom.teamId,
+        homeScore: null,
+        awayScore: null
+      })
+    }
+
+    return firstRound
+  }
+
+  const syncBracketMatches = (slots: BracketSlot[]) => {
+    const firstRound = createFirstRoundMatches(slots)
+    setMatches((current) => [
+      ...current.filter((match) => match.stage !== 'bracket'),
+      ...firstRound
+    ])
+  }
+
   const advanceToBracket = () => {
     if (!standings.length) return
 
@@ -216,28 +249,8 @@ export function TournamentManager () {
       teamId: team.id
     }))
 
-    const firstRound: Match[] = []
-    const lastIndex = sortedTeams.length - 1
-    for (let i = 0; i < Math.ceil(sortedTeams.length / 2); i += 1) {
-      const top = sortedTeams[i]
-      const bottom = sortedTeams[lastIndex - i]
-      if (!top || !bottom) break
-      firstRound.push({
-        id: createId(),
-        stage: 'bracket',
-        round: 1,
-        homeTeamId: top.id,
-        awayTeamId: bottom.id,
-        homeScore: null,
-        awayScore: null
-      })
-    }
-
     setBracketSlots(slots)
-    setMatches((current) => [
-      ...current.filter((match) => match.stage !== 'bracket'),
-      ...firstRound
-    ])
+    syncBracketMatches(slots)
     setPhase('bracket')
   }
 
@@ -255,25 +268,25 @@ export function TournamentManager () {
     const draggedId = event.dataTransfer.getData('text/plain') || draggedTeamId
     if (!draggedId) return
 
-    setBracketSlots((current) => {
-      const next = [...current]
-      const sourceIndex = next.findIndex((slot) => slot.teamId === draggedId)
-      const targetIndex = next.findIndex((slot) => slot.id === slotId)
-      if (sourceIndex === -1 || targetIndex === -1) return current
+    const sourceIndex = bracketSlots.findIndex((slot) => slot.teamId === draggedId)
+    const targetIndex = bracketSlots.findIndex((slot) => slot.id === slotId)
+    if (sourceIndex === -1 || targetIndex === -1) return
 
-      const sourceTeamId = next[sourceIndex].teamId
-      const targetTeamId = next[targetIndex].teamId
+    const nextSlots = [...bracketSlots]
+    const sourceTeamId = nextSlots[sourceIndex].teamId
+    const targetTeamId = nextSlots[targetIndex].teamId
 
-      next[sourceIndex] = {
-        ...next[sourceIndex],
-        teamId: targetTeamId
-      }
-      next[targetIndex] = {
-        ...next[targetIndex],
-        teamId: sourceTeamId
-      }
-      return next
-    })
+    nextSlots[sourceIndex] = {
+      ...nextSlots[sourceIndex],
+      teamId: targetTeamId
+    }
+    nextSlots[targetIndex] = {
+      ...nextSlots[targetIndex],
+      teamId: sourceTeamId
+    }
+
+    setBracketSlots(nextSlots)
+    syncBracketMatches(nextSlots)
 
     setDraggedTeamId(null)
   }
