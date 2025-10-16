@@ -5,14 +5,16 @@ import {
   listTournaments,
   getTournament,
   addTeam,
-  updateTournament
+  updateTournament,
+  updateGroups
 } from './tournamentStore.js'
 import {
   generateRoundRobinMatches,
   generateKnockoutTree,
   calculateStandings,
   recordMatchResult,
-  updateTournamentMatches
+  updateTournamentMatches,
+  reseedKnockoutBracket
 } from './tournamentService.js'
 
 const app = express()
@@ -71,6 +73,20 @@ app.post('/api/tournaments/:id/schedule/knockout', (req, res) => {
   res.json(bracket)
 })
 
+app.put('/api/tournaments/:id/bracket', (req, res) => {
+  const tournament = getTournament(req.params.id)
+  if (!tournament) return res.status(404).json({ error: 'Not found' })
+  try {
+    const result = reseedKnockoutBracket(tournament, req.body?.pairings)
+    if (!result.ok) {
+      return res.status(400).json({ error: result.error })
+    }
+    return res.json(result.matches)
+  } catch (error) {
+    return res.status(400).json({ error: error.message })
+  }
+})
+
 app.post('/api/tournaments/:id/matches/:matchId/result', (req, res) => {
   const tournament = getTournament(req.params.id)
   if (!tournament) return res.status(404).json({ error: 'Not found' })
@@ -97,6 +113,20 @@ app.put('/api/tournaments/:id/settings', (req, res) => {
   }
   updateTournament(tournament.id, tournament)
   res.json(tournament.settings)
+})
+
+app.put('/api/tournaments/:id/groups', (req, res) => {
+  const tournament = getTournament(req.params.id)
+  if (!tournament) return res.status(404).json({ error: 'Not found' })
+  try {
+    const result = updateGroups(tournament.id, req.body?.groups)
+    if (!result.ok) {
+      return res.status(400).json({ error: result.error })
+    }
+    return res.json(result.groups)
+  } catch (error) {
+    return res.status(400).json({ error: error.message })
+  }
 })
 
 app.listen(PORT, () => {

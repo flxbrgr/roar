@@ -3,6 +3,7 @@ import { fetchTournament, Tournament } from '../api/tournaments'
 import { MatchList } from './MatchList'
 import { StandingsTable } from './StandingsTable'
 import { Bracket } from './Bracket'
+import { GroupManager } from './GroupManager'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
@@ -32,6 +33,7 @@ export function TournamentDashboard ({ tournamentId }: Props) {
           <span className="bg-white/20 px-3 py-1 rounded-full">{t('tournamentForm.format')}: {data.format}</span>
         </div>
       </header>
+      <GroupManager tournament={data as Tournament} />
       <MatchList tournament={data as Tournament} />
       <Bracket tournament={data as Tournament} />
       <StandingsTable tournament={data as Tournament} />

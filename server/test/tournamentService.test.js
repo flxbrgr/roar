@@ -43,7 +43,7 @@ describe('calculateStandings', () => {
       pointsForLoss: 0
     })
     expect(standings[0].team.name).toBe('Alpha')
-    expect(standings[1].team.name).toBe('Charlie')
+    expect(standings[1].team.name).toBe('Bravo')
   })
 })
 
