@@ -1,4 +1,5 @@
-import { useMemo, useState, type DragEvent } from 'react'
+import { useMemo, useState } from 'react'
+import type { DragEvent } from 'react'
 import { ArrowRight, ListPlus, RefreshCcw, Trophy, Upload } from 'lucide-react'
 
 type Phase = 'setup' | 'roundRobin' | 'bracket'
