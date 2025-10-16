@@ -6,6 +6,9 @@
     "client",
     "server"
   ],
+  "overrides": {
+    "vite": "^7.1.10"
+  },
   "scripts": {
     "install:all": "npm install --workspaces",
     "build": "npm run build --workspaces",

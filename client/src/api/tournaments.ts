@@ -28,13 +28,14 @@ export interface Tournament {
   locale: string
   format: string
   teams: Team[]
+  groups: TournamentGroup[]
   matches: Round[]
   settings: {
     pointsForWin: number
     pointsForDraw: number
     pointsForLoss: number
   }
-  standings: Array<{
+  standings?: Array<{
     team: Team
     played: number
     wins: number
@@ -45,6 +46,18 @@ export interface Tournament {
     goalDifference: number
     points: number
   }>
+}
+
+export interface TournamentGroup {
+  id: string
+  name: string
+  teamIds: string[]
+}
+
+export interface BracketPairing {
+  matchId: string
+  homeTeamId?: string
+  awayTeamId?: string
 }
 
 const api = axios.create({
@@ -80,5 +93,15 @@ export async function generateSchedule (id: string, mode: 'round-robin' | 'knock
 
 export async function recordResult (tournamentId: string, matchId: string, payload: { homeScore: number, awayScore: number }) {
   const { data } = await api.post(`/tournaments/${tournamentId}/matches/${matchId}/result`, payload)
+  return data
+}
+
+export async function updateGroups (tournamentId: string, groups: TournamentGroup[]) {
+  const { data } = await api.put<TournamentGroup[]>(`/tournaments/${tournamentId}/groups`, { groups })
+  return data
+}
+
+export async function reseedBracket (tournamentId: string, pairings: BracketPairing[]) {
+  const { data } = await api.put<Round[]>(`/tournaments/${tournamentId}/bracket`, { pairings })
   return data
 }

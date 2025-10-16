@@ -36,7 +36,7 @@ function App () {
                 </p>
                 <ul className="text-sm text-white/70 space-y-2">
                   <li>• Configurable points systems and tie-breaker logic</li>
-                  <li>• Instant bracket visualisations with drag & drop (coming soon)</li>
+                  <li>• Instant bracket visualisations with drag & drop seeding</li>
                   <li>• Sponsor-ready share links and embeddable widgets</li>
                 </ul>
               </div>

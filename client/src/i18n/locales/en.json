@@ -12,7 +12,10 @@
     "locale": "Primary language",
     "addTeam": "Add team",
     "teamPlaceholder": "Team name",
-    "create": "Create"
+    "create": "Create",
+    "teamRequirement": "Add at least two teams to create a tournament.",
+    "removeTeam": "Remove team",
+    "duplicateTeam": "This team has already been added."
   },
   "formats": {
     "roundRobin": "Round Robin",
@@ -51,6 +54,30 @@
   "notifications": {
     "created": "Tournament created",
     "scheduleGenerated": "Schedule updated",
-    "resultRecorded": "Result stored"
+    "resultRecorded": "Result stored",
+    "createError": "Unable to create tournament. Please try again."
+  },
+  "groups": {
+    "title": "Group assignments",
+    "subtitle": "Drag teams between groups to prepare the group stage.",
+    "addGroup": "Add group",
+    "save": "Save groups",
+    "saving": "Saving…",
+    "saved": "Groups updated",
+    "unsaved": "You have unsaved changes",
+    "error": "Could not update groups. Please try again.",
+    "unassigned": "Unassigned",
+    "group": "Group",
+    "rename": "Rename group"
+  },
+  "bracket": {
+    "edit": "Edit seeding",
+    "save": "Save bracket",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "locked": "Seeding is locked because scores have been recorded.",
+    "editHint": "Generate the knockout tree and then click “Edit seeding” to rearrange first-round matchups.",
+    "dragHint": "Drag teams to new positions to reseed the bracket.",
+    "error": "Unable to update bracket. Please try again."
   }
 }

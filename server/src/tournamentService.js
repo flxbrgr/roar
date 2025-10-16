@@ -187,6 +187,73 @@ export function updateTournamentMatches (tournament, generator) {
   return matches
 }
 
+export function reseedKnockoutBracket (tournament, pairings) {
+  if (!Array.isArray(pairings)) {
+    return { ok: false, error: 'Pairings must be an array' }
+  }
+
+  if (!tournament.matches || tournament.matches.length === 0) {
+    return { ok: false, error: 'No bracket available for reseeding' }
+  }
+
+  const isKnockout = tournament.matches.every((round) =>
+    round.matches.every((match) => match.meta && typeof match.meta === 'object')
+  )
+
+  if (!isKnockout) {
+    return { ok: false, error: 'Only knockout brackets can be reseeded' }
+  }
+
+  const hasCompletedMatches = tournament.matches.some((round) =>
+    round.matches.some((match) => match.status === 'completed')
+  )
+
+  if (hasCompletedMatches) {
+    return { ok: false, error: 'Cannot reseed a bracket with recorded results' }
+  }
+
+  const teamMap = new Map(tournament.teams.map((team) => [team.id, team]))
+  const seen = new Set()
+  const orderedTeams = []
+
+  for (const entry of pairings) {
+    if (!entry || typeof entry.matchId !== 'string') {
+      return { ok: false, error: 'Invalid pairing payload' }
+    }
+
+    for (const key of ['homeTeamId', 'awayTeamId']) {
+      const teamId = entry[key]
+      if (!teamId || teamId.startsWith('bye')) {
+        continue
+      }
+
+      const team = teamMap.get(teamId)
+      if (!team) {
+        return { ok: false, error: `Unknown team referenced in pairing: ${teamId}` }
+      }
+
+      if (seen.has(teamId)) {
+        return { ok: false, error: 'Teams can only appear once in the bracket' }
+      }
+
+      orderedTeams.push(team)
+      seen.add(teamId)
+    }
+  }
+
+  if (seen.size !== teamMap.size) {
+    return { ok: false, error: 'Each team must be assigned to a slot' }
+  }
+
+  if (pairings.length !== Math.ceil(orderedTeams.length / 2)) {
+    return { ok: false, error: 'Pairings count does not match tournament size' }
+  }
+
+  const matches = generateKnockoutTree(orderedTeams)
+  upsertMatches(tournament.id, matches)
+  return { ok: true, matches }
+}
+
 function propagateWinners (rounds) {
   rounds.forEach((round, index) => {
     if (index === rounds.length - 1) return
